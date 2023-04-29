@@ -1,0 +1,9 @@
+[submodule "ros_whill"]
+	path = ros_whill
+	url = https://gitlab.com/sick-japan/ros/tsukuba-challenge/ros_whill
+[submodule "ira_laser_tools"]
+	path = ira_laser_tools
+	url = https://gitlab.com/sick-japan/ros/tsukuba-challenge/ira_laser_tools
+[submodule "sick_wagen"]
+	path = sick_wagen
+	url = https://gitlab.com/sick-japan/ros/tsukuba-challenge/sick_wagen
