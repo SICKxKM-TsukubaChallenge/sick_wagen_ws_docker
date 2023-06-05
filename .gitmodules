@@ -7,3 +7,6 @@
 [submodule "sick_wagen"]
 	path = sick_wagen
 	url = https://gitlab.com/sick-japan/ros/tsukuba-challenge/sick_wagen
+[submodule "ublox"]
+	path = ublox
+	url = https://github.com/KumarRobotics/ublox
