@@ -1,9 +1,9 @@
 [submodule "ros_whill"]
 	path = ros_whill
-	url = https://github.com/SICKxKM-TsukubaChallenge/ros_whill
+	url = git@github.com:SICKxKM-TsukubaChallenge/ros_whill.git
 [submodule "ira_laser_tools"]
 	path = ira_laser_tools
-	url = https://github.com/SICKxKM-TsukubaChallenge/ira_laser_tools
+	url = git@github.com:SICKxKM-TsukubaChallenge/ira_laser_tools.git
 [submodule "sick_wagen"]
 	path = sick_wagen
-	url = https://github.com/SICKxKM-TsukubaChallenge/sick_wagen
+	url = git@github.com:SICKxKM-TsukubaChallenge/sick_wagen.git
