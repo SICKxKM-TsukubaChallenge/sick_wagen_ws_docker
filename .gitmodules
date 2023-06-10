@@ -7,6 +7,3 @@
 [submodule "sick_wagen"]
 	path = sick_wagen
 	url = https://github.com/SICKxKM-TsukubaChallenge/sick_wagen
-[submodule "ublox"]
-	path = ublox
-	url = https://github.com/KumarRobotics/ublox
