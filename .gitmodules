@@ -7,3 +7,12 @@
 [submodule "sick_wagen"]
 	path = sick_wagen
 	url = git@github.com:SICKxKM-TsukubaChallenge/sick_wagen.git
+[submodule "wit_node"]
+	path = wit_node
+	url = git@github.com:SICKxKM-TsukubaChallenge/wit_node.git
+[submodule "mcl_3dl"]
+	path = mcl_3dl
+	url = git@github.com:SICKxKM-TsukubaChallenge/mcl_3dl.git
+[submodule "mcl_3dl_msgs"]
+	path = mcl_3dl_msgs
+	url = https://github.com/SICKxKM-TsukubaChallenge/mcl_3dl_msgs
