@@ -3,9 +3,19 @@
 ## Installation
 
 ```bash
-sudo apt install ros-noetic-serial \
+sudo apt install ros-noetic-desktop-full \
+    python3-catkin-tools \
+    ros-noetic-serial \
     ros-noetic-ublox \
-    ros-noetic-rt-usb-9axisimu-driver
+    ros-noetic-usb-cam \
+    ros-noetic-mcl-3dl-msgs \
+    ros-noetic-ecl-core \
+    ros-noetic-move-base \
+    ros-noetic-joy \
+    ros-noetic-gmapping \
+    ros-noetic-map-server \
+    ros-noetic-amcl \
+    ros-noetic-dwa-local-planner
 ```
 
 ```bash
@@ -66,4 +76,22 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="t
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{serial}=="FTRVY2VA", SYMLINK+="ttyUSB-WHILL", GROUP="dialout"
 # UBLOX
 SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", ATTRS{idProduct}=="01a9", SYMLINK+="ttyACM-UBLOX", GROUP="dialout"
+```
+
+## Network devices
+
+```bash
+sudo vim /etc/hosts
+```
+
+```bash
+127.0.0.1       localhost
+127.0.0.1       MY-PC
+192.168.0.2     TIM_RIGHT_IP
+192.168.0.3     TIM_LEFT_IP
+192.168.0.4     MULTISCAN_IP
+...
+
+```bash
+echo "export ROS_MASTER_PC_IP=192.168.0.152" >> ~/.bashrc
 ```
