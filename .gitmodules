@@ -15,4 +15,4 @@
 	url = git@github.com:SICKxKM-TsukubaChallenge/mcl_3dl.git
 [submodule "mcl_3dl_msgs"]
 	path = mcl_3dl_msgs
-	url = https://github.com/SICKxKM-TsukubaChallenge/mcl_3dl_msgs
+	url = git@github.com:SICKxKM-TsukubaChallenge/mcl_3dl_msgs.git
