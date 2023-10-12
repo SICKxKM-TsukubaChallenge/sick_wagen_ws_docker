@@ -95,3 +95,13 @@ sudo vim /etc/hosts
 ```bash
 echo "export ROS_MASTER_PC_IP=192.168.0.152" >> ~/.bashrc
 ```
+
+## URDF File
+
+.bashrc
+```
+# SICK
+export SICK_WAGEN_XACRO=sick_wagen.xacro
+# KM
+export SICK_WAGEN_XACRO=sick_wagen-km.xacro
+```
