@@ -15,7 +15,9 @@ sudo apt install ros-noetic-desktop-full \
     ros-noetic-gmapping \
     ros-noetic-map-server \
     ros-noetic-amcl \
-    ros-noetic-dwa-local-planner
+    ros-noetic-dwa-local-planner \
+    ros-noetic-tf2-sensor-msgs \
+    ros-noetic-trajectory-tracker
 ```
 
 ```bash
