@@ -13,3 +13,6 @@
 [submodule "mcl_3dl"]
 	path = mcl_3dl
 	url = git@github.com:SICKxKM-TsukubaChallenge/mcl_3dl.git
+[submodule "pointcloud_concatenate"]
+	path = pointcloud_concatenate
+	url = git@github.com:SICKxKM-TsukubaChallenge/pointcloud_concatenate.git
