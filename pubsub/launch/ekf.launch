@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<launch>
+    <!-- GPS to odometry -->
+	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" respawn="true">
+        <rosparam command="load" file="$(find pubsub)/launch/navsat_all.yaml" />
+		<remap from="gps/fix" to="ublox/fix"/>
+        <remap from="imu/data" to="wit/imu"/>	
+        <remap from="odometry/filtered" to="/whill/odom"/>
+    </node>
+
+	<!--  robot_localization  -->
+	<rosparam command="load" file="$(find pubsub)/config/robot_localization/rover_amcl.yaml" />
+    <param name="odom0" value="/whill/odom"/>
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
+        <remap from="odom" to="/whill/odom"/>
+        <remap from="imu0" to="/wit/imu"/>
+		<remap from="odometry/filtered" to="odometry/filtered_map"/>
+	</node>
+
+</launch>

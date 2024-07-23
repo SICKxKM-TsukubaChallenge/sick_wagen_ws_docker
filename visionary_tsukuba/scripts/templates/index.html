@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Capture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        #video {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Visionary-B Two People Detection</h1>
+        <img id="video" src="{{ url_for('video_feed') }}" alt="VB2 Feed">
+    </div>
+</body>
+</html>
+
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Capture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #container {
+            max-width: 1000px; /* Adjust the width based on your preference */
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        #video-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #video, #depth {
+            width: 48%; /* Adjust the width based on your preference */
+            max-width: 640px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Video and Depth</h1>
+        <div id="video-container">
+            <img id="video" src="{{ url_for('video_feed') }}" alt="RGB Image">
+            <img id="depth" src="{{ url_for('video_feed') }}" alt="Depth Image">
+        </div>
+    </div>
+</body>
+</html>
+ --> 

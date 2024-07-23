@@ -1,0 +1,6 @@
+<launch>
+    <node name="subscriber1" pkg="pubsub" type="subscriber1.py" output="screen" >
+        <remap from="/pointcloud" to="/multiscan/cloud_360"/>
+        <remap from="/pointcloud_out" to="/multiscan_xyz"/>
+    </node>
+</launch>
