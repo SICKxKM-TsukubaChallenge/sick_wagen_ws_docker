@@ -1,0 +1,3 @@
+<launch>
+    <node name="converter1" pkg="pubsub" type="point_converter.py" output="screen" />
+</launch>
