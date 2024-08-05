@@ -1,4 +1,4 @@
-# sick_wagen_docker
+# sick_wagen_ws_docker
 sick_wagen_workspaceをコンテナ内で動かす
 
 ## Docker commands
@@ -19,31 +19,26 @@ cd sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
 
 ## Installation
 
+ディレクトリを作り，リンクを作成
 ```bash
-sudo apt install ros-noetic-desktop-full \
-    python3-catkin-tools \
-    ros-noetic-serial \
-    ros-noetic-ublox \
-    ros-noetic-usb-cam \
-    ros-noetic-mcl-3dl-msgs \
-    ros-noetic-ecl-core \
-    ros-noetic-move-base \
-    ros-noetic-joy \
-    ros-noetic-gmapping \
-    ros-noetic-map-server \
-    ros-noetic-amcl \
-    ros-noetic-dwa-local-planner \
-    ros-noetic-tf2-sensor-msgs \
-    ros-noetic-trajectory-tracker
-```
-
-```bash
-mkdir ~/sick_wagen_ws
-cd ~/sick_wagen_ws
-git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_workspace.git
+mkdir ~/sick_wagen_ws_docker
+cd ~/sick_wagen_ws_docker
+git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git
 ln -sf sick_wagen_workspace src
 cd src
 git submodule foreach --recursive git checkout ros1-sick
+```
+
+コンテナ起動（イメージをビルドしていない場合はビルドしていない場合は上記のコマンドに従ってイメージをビルドしておく．）
+```
+rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+```
+コンテナ内でROS環境の構築
+```
+./ros_entrypoint.sh
+```
+コンテナ内でビルド
+```
 cd ~/sick_wagen_ws
 catkin build
 ```
