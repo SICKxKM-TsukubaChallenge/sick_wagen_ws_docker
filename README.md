@@ -112,6 +112,7 @@ sudo vim /etc/hosts
 192.168.0.3     TIM_LEFT_IP
 192.168.0.4     MULTISCAN_IP
 ...
+```
 
 ```bash
 echo "export ROS_MASTER_PC_IP=192.168.0.152" >> ~/.bashrc
