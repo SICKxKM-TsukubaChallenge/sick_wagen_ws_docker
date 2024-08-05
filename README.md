@@ -21,8 +21,8 @@ cd sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
 
 ディレクトリを作り，リンクを作成
 ```bash
-mkdir ~/sick_wagen_ws_docker
-cd ~/sick_wagen_ws_docker
+mkdir ~/sick_wagen_workspace
+cd ~/sick_wagen_workspace
 git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git
 mv sick_wagen_ws_docker sick_wagen_workspace 
 ln -sf sick_wagen_workspace src
