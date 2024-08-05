@@ -98,6 +98,12 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", ATTRS{seria
 # UBLOX
 SUBSYSTEM=="tty", ATTRS{idVendor}=="1546", ATTRS{idProduct}=="01a9", SYMLINK+="ttyACM-UBLOX", GROUP="dialout"
 ```
+### Reload and apply the rules
+```
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
 
 ## Network devices
 
