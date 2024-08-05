@@ -18,6 +18,12 @@ cd sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
 # SICK Wagen workspace
 
 ## Installation
+ssh-agentの起動
+```
+eval `ssh-agent`
+ssh-add ~/.ssh/id_rsa
+poetry lock
+```
 
 ディレクトリを作り，リンクを作成
 ```bash
