@@ -1,20 +1,19 @@
 # sick_wagen_docker
-sick_wagen_workspaceをコンテナ内で動かすためのもの
+sick_wagen_workspaceをコンテナ内で動かす
 
-## Docker build
+## Docker commands
+### Docker build
 ```
 docker build -t sick/ros:noetic .
 ```
-## Docker container 起動
+### Docker container implementation
 ```
-cd Docker
 rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
 ```
-## Docker内での操作（stepbystepまで）
+### Docker内での操作の例（stepbystepまで）
 ```
-cd Docker/sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
+cd sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
 ```
-
 
 # SICK Wagen workspace
 
