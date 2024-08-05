@@ -22,7 +22,6 @@ ssh-agentの起動
 ```
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
-poetry lock
 ```
 
 ディレクトリを作り，リンクを作成
