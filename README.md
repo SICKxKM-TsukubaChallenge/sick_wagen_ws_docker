@@ -89,6 +89,8 @@ sudo adduser $USER dialout
 /etc/udev/rules.d/90-usb-serial-devices.rules
 
 ```bash
+# RT-USB-9AXIS
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2b72", ATTRS{idProduct}=="0003", SYMLINK+="ttyACM-RT9AXIS", GROUP="dialout"
 # WT901C
 SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="ttyUSB-WT901C", GROUP="dialout"
 # WHILL
