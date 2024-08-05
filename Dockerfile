@@ -67,4 +67,7 @@ RUN python3 -m pip install whill
 
 RUN rosdep init && rosdep update
 
+COPY ros_entrypoint.sh /ros_entrypoint.sh
+
+ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["/bin/bash"]

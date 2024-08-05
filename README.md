@@ -24,6 +24,7 @@ cd sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
 mkdir ~/sick_wagen_ws_docker
 cd ~/sick_wagen_ws_docker
 git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git
+mv sick_wagen_ws_docker sick_wagen_workspace 
 ln -sf sick_wagen_workspace src
 cd src
 git submodule foreach --recursive git checkout ros1-sick
@@ -33,13 +34,10 @@ git submodule foreach --recursive git checkout ros1-sick
 ```
 rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
 ```
-コンテナ内でROS環境の構築
-```
-./ros_entrypoint.sh
-```
+
 コンテナ内でビルド
 ```
-cd ~/sick_wagen_ws
+cd ~/sick_wagen_workspace
 catkin build
 ```
 
