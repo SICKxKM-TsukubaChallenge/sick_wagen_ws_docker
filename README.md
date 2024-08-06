@@ -10,10 +10,6 @@ docker build -t sick/ros:noetic .
 ```
 rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
 ```
-### Docker内での操作の例（stepbystepまで）
-```
-cd sick_wagen_ws/sick_wagen_workspace/sick_wagen/launch/stepbystep/
-```
 
 # SICK Wagen workspace
 
@@ -34,13 +30,22 @@ ln -sf sick_wagen_workspace src
 cd src
 git submodule foreach --recursive git checkout ros1-sick
 ```
+イメージのビルド
+```
+docker build -t sick/ros:noetic .
+```
 
-コンテナ起動（イメージをビルドしていない場合はビルドしていない場合は上記のコマンドに従ってイメージをビルドしておく．）
+rockerのinstall
+```
+pip install rocker
+```
+
+コンテナの起動
 ```
 rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
 ```
 
-コンテナ内でビルド
+コンテナ内での(ROSシステムの)ビルド
 ```
 cd ~/sick_wagen_workspace
 catkin build
