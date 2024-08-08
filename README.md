@@ -22,16 +22,16 @@ ssh-add ~/.ssh/id_rsa
 
 ディレクトリを作り，リンクを作成
 ```bash
-mkdir ~/sick_wagen_workspace
-cd ~/sick_wagen_workspace
-git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git
-mv sick_wagen_ws_docker sick_wagen_workspace 
-ln -sf sick_wagen_workspace src
+cd ~
+git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git 
+cd sick_wagen_ws_docker
+ln -sf sick_wagen_ws src
 cd src
 git submodule foreach --recursive git checkout ros1-sick
 ```
 イメージのビルド
 ```
+cd ~/sick_wagen_ws_docker
 docker build -t sick/ros:noetic .
 ```
 
@@ -47,7 +47,7 @@ rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add
 
 コンテナ内での(ROSシステムの)ビルド
 ```
-cd ~/sick_wagen_workspace
+cd ~/sick_wagen_ws_docker
 catkin build
 ```
 

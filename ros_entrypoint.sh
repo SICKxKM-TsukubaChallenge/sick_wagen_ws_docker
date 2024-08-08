@@ -71,13 +71,13 @@ export __NV_PRIME_RENDER_OFFLOAD=1
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
 
 echo 'source /opt/ros/noetic/setup.bash' >> /home/${DEFAULT_USER}/.bashrc
-echo 'source /home/sick/Docker/sick_wagen_ws/devel/setup.bash' >> /home/${DEFAULT_USER}/.bashrc
-echo 'export ROS_MAP=/home/sick/Docker/sick_wagen_ws/maps/map_1119' >> /home/${DEFAULT_USER}/.bashrc
+echo 'source /home/sick/sick_wagen_ws_docker/sick_wagen_ws/devel/setup.bash' >> /home/${DEFAULT_USER}/.bashrc
+echo 'export ROS_MAP=/home/sick/sick_wagen_ws_docker/sick_wagen_ws/maps/map_1119' >> /home/${DEFAULT_USER}/.bashrc
 echo 'export ROS_MASTER_PC_IP=192.168.0.152' >> /home/${DEFAULT_USER}/.bashrc
 echo 'export SICK_WAGEN_XACRO=sick_wagen.xacro' >> /home/${DEFAULT_USER}/.bashrc
     
 source /opt/ros/noetic/setup.bash
-source /home/sick/Docker/sick_wagen_ws/devel/setup.bash
+source /home/sick/sick_wagen_ws_docker/sick_wagen_ws/devel/setup.bash
 
 if which "$1" > /dev/null 2>&1 ; then
 	$EXEC "$@"
