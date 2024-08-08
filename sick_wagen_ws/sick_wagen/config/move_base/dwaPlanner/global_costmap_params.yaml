@@ -1,0 +1,31 @@
+global_costmap:
+        plugins:
+                #gmapping で作成したmapをそのまま取り込む。 
+                - {name: static_layer, type: "costmap_2d::StaticLayer"}
+                #laserScanやPointClouud型のLidarデータをmapに取り組む  
+                - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+                #map上の障害物を期待の大きさに合わせて膨張処理を行う
+                - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
+         
+        global_frame: map
+        robot_base_frame: base_link
+        #costmapの更新とpublish頻度
+        update_frequency: 1.0
+        publish_frequency: 0.5
+        #tf treeのリンクの待ち時間
+        transform_tolerance: 0.2
+        # static_map: true
+
+        static_layer:
+                map_topic: "map"
+                #unknown領域の扱い　true:unknown,false：free
+                track_unknown_space: true
+                #map topicに加えmap_update topicを受け入れるかどうか
+                subscribe_to_updates: true
+                enabled: true
+        
+        inflation_layer:
+                #footprint:[[0.3, -0.12][]]のようにfootprint要素を書くとその値が優先
+                inflation_radius: 1.0
+
+        

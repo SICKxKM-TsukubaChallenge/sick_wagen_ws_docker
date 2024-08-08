@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- x y z yaw pitch roll frame_id child_frame_id -->
+	<arg name="map_pcd" default="$(env ROS_3D_MAP)"/>
+	<node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="$(arg map_pcd)">
+		<param name="frame_id" type="string" value="map" />
+		<param name="latch" type="bool" value="True" />
+		<remap from="cloud_pcd" to="mapcloud" />
+	</node>
+
+	<!-- map -->
+	<arg name="map_file" default="$(env ROS_MAP).yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/040_all_gmapping/040_map.rviz" />
+</launch>

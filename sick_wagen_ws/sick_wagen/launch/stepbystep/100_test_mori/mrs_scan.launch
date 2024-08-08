@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--      Mrs 1000      -->
+	<arg name="hostname" default="192.168.0.5"/>
+	<arg name="cloud_topic" default="mrs_cloud"/>
+	<arg name="frame_id" default="mrs_link"/>
+	<node name="sick_mrs_1xxx" pkg="sick_scan" type="sick_generic_caller" respawn="false" output="screen">
+		<param name="scanner_type" type="string" value="sick_mrs_1xxx"/>
+		<param name="min_ang" type="double" value="-2.3998277"/>
+		<param name="max_ang" type="double" value="+2.3998277"/>
+		<param name="intensity_resolution_16bit" type="bool" value="false"/>
+		<param name="hostname" type="string" value="$(arg hostname)"/>
+		<param name="port" type="string" value="2112"/>
+		<param name="timelimit" type="int" value="5"/>
+		<param name="cloud_topic" type="string" value="$(arg cloud_topic)"/>
+		<param name="frame_id" type="str" value="$(arg frame_id)"/>
+		<param name="sw_pll_only_publish" type="bool" value="true"/>
+		<param name="publish_datagram" type="bool" value="True" />
+		<!--
+		<param name="imu_enable" type="bool" value="True" />
+		<param name="imu_enable_additional_info" type="bool" value="True" />
+		-->
+	</node>
+
+	<!-- run pointcloud_to_laserscan node -->
+	<node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
+		<remap from="cloud_in" to="mrs_cloud" />
+		<!--  Published Topics -->
+		<remap from="scan" to="mrs_PtL_scan"/> 
+		<!-- MRS1000 setting -->
+		<param name="min_height" value="-3.0"/>
+		<param name="max_height" value="6.0"/>
+		<param name="angle_min" value="-2.339982771873"/>
+		<param name="angle_max" value="2.339982771873"/>
+		<param name="angle_increment" value="0.004363323"/>
+		<param name="scan_time" value="0.02"/>
+		<param name="range_min" value="0.2"/>
+		<param name="range_max" value="100.0"/>
+		<param name="target_frame" value="mrs_link"/>
+		<param name="concurrency_level" value="1"/>
+		<param name="use_inf" value="false"/>
+		<!--
+		<rosparam>
+			transform_tolerance: 0.01
+			min_height: -5.0
+			max_height: 5.0
+
+			angle_min: -2.339283771873 # mrs1000
+			angle_max: 2.339982771873 # 
+			angle_increment: 0.004363323 # 0.25度
+			scan_time: 0.02  #50Hz
+			range_min: 0.2
+			range_max: 60.0
+			use_inf: true
+			inf_epsilon: 1.0
+
+			# Concurrency level, affects number of pointclouds queued for processing and number of threads used
+			# 0 : Detect number of cores
+			# 1 : Single threaded
+			# 2->inf : Parallelism level
+			concurrency_level: 1
+		</rosparam>
+		-->
+	</node>
+	<node pkg="tf" type="static_transform_publisher" name="stp_mrs_laser" args="-0.1 0 1.3 0 0  3.14 base_link mrs_link 100" />
+<!-- x[m] y[m] z[m] yaw(z)[rad] pitch(y)[rad] roll(x)[rad] -->
+</launch>

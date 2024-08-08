@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--     GPS     -->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/gps.launch" />
+	<!--     LiDAR     -->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/tim_scan.launch" />
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/mrs_scan.launch" />
+	<!--     Whill     -->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/whill.launch" />
+	<!--     EKF     -->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/ekf.launch" />
+
+	<!--		 map		-->
+	<arg name="map_file" default="$(find sick_wagen)/launch/stepbystep/100_test_mori/map/map_all.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+	<!--		amcl node		-->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/amcl.launch" />
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/100_test_mori/amcl.rviz"/>
+</launch>

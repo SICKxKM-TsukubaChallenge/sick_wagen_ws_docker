@@ -1,0 +1,18 @@
+digraph G {
+"base_link" -> "base_floor"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1654930106.993 sec old)\nBuffer length: 0.000 sec\n"];
+"odom" -> "base_link"[label="Broadcaster: /whill\nAverage rate: 47.782 Hz\nMost recent transform: 1654930106.969 ( 0.024 sec old)\nBuffer length: 4.960 sec\n"];
+"base_floor" -> "footrest_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1654930106.993 sec old)\nBuffer length: 0.000 sec\n"];
+"base_floor" -> "frontwheel_left"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1654930106.993 sec old)\nBuffer length: 0.000 sec\n"];
+"base_floor" -> "frontwheel_right"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1654930106.993 sec old)\nBuffer length: 0.000 sec\n"];
+"base_link" -> "imu"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1654930106.993 sec old)\nBuffer length: 0.000 sec\n"];
+"map" -> "odom"[label="Broadcaster: /slam_gmapping\nAverage rate: 20.202 Hz\nMost recent transform: 1654930107.035 ( -0.042 sec old)\nBuffer length: 4.950 sec\n"];
+"base_floor" -> "left_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 31.781 Hz\nMost recent transform: 1654930106.949 ( 0.044 sec old)\nBuffer length: 4.940 sec\n"];
+"base_floor" -> "right_wheel_link"[label="Broadcaster: /robot_state_publisher\nAverage rate: 31.781 Hz\nMost recent transform: 1654930106.949 ( 0.044 sec old)\nBuffer length: 4.940 sec\n"];
+"base_link" -> "tim_link_L"[label="Broadcaster: /tim_scans/stp_tim_L_frame\nAverage rate: 10.194 Hz\nMost recent transform: 1654930107.028 ( -0.035 sec old)\nBuffer length: 4.905 sec\n"];
+"base_link" -> "laser_link"[label="Broadcaster: /stp_laser_frame\nAverage rate: 10.193 Hz\nMost recent transform: 1654930107.052 ( -0.059 sec old)\nBuffer length: 4.905 sec\n"];
+"base_link" -> "tim_link_R"[label="Broadcaster: /tim_scans/stp_tim_R_frame\nAverage rate: 10.198 Hz\nMost recent transform: 1654930106.996 ( -0.003 sec old)\nBuffer length: 4.805 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1654930106.993"[ shape=plaintext ] ;
+ }->"map";
+}

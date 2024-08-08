@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--  ublox launch file  -->
+	<node pkg="ublox_gps" type="ublox_gps" name="ublox" output="screen" clear_params="true" respawn="true" respawn_delay="30">
+		<rosparam command="load" file="$(find sick_wagen)/config/ublox_gps/zed_f9p_whill.yaml" />
+	</node>
+	<node pkg="tf" type="static_transform_publisher" name="stp_gps_frame" args="0 0 1.03 0 0 0 base_link gps 100" />
+
+
+	<!--     navsat transform      -->
+	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" respawn="true">
+		<rosparam command="load" file="$(find sick_wagen)/launch/stepbystep/100_test_mori/robot_localization/gps_navsat.yaml" />
+
+		<remap from="/imu/data" to="/whill/states/imu" />
+		<remap from="/gps/fix" to="/ublox/fix" />
+		<remap from="/odometry/filtered" to="odometry/filtered" />
+
+	</node>
+
+
+
+
+	<!--  robot_localization  -->
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true" output="screen">
+		<rosparam command="load" file="$(find sick_wagen)/launch/stepbystep/100_test_mori/robot_localization/ekf_robot_localization.yaml" />
+		<remap from="/odometry/filtered" to="/odometry/filtered" />
+		<remap from="odom0" to="/whill/odom" />
+		<remap from="odom1" to="/odometry/gps" />
+		<remap from="imu0" to="/whill/states/imu" />
+	</node>
+
+</launch>

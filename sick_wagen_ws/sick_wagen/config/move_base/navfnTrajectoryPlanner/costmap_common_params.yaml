@@ -1,0 +1,19 @@
+robot_radius: 1.0
+
+#obstacle_layer:
+
+# これ以下の距離にある物体を障害物として扱う
+obstacle_range: 2.5
+# これ以下の距離に物体が検出された場合、ロボットとその物体との間に障害物はないものとして扱う
+raytrace_range: 3.0
+
+# ロボットの大きさに関するパラメータ
+#footprint: [[1.0, -0.5], [-0.5, 0.5], [-0.3, -0.3], [0.3, -0.3]]
+
+# コストマップのタイプの設定
+#map_type: costmap_2d
+
+# LRFの設定 
+observation_sources: laser_scan_sensor 
+laser_scan_sensor: {sensor_frame: base_link, data_type: LaserScan, topic: scan_multi , marking: true, clearing: true}
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--  ublox launch file  -->
+	<node pkg="ublox_gps" type="ublox_gps" name="ublox" output="screen" clear_params="true" respawn="true" respawn_delay="30">
+		<rosparam command="load" file="$(find sick_wagen)/config/ublox_gps/zed_f9p_whill.yaml" />
+	</node>
+	<node pkg="tf" type="static_transform_publisher" name="stp_gps_frame" args="0 0 1.03 0 0 0 base_link gps 100" />
+	<!--     IMU Node      -->
+	<arg name="port" default="/dev/ttyACM1" />
+	<arg name="frame_id" default="imu_link" />
+	<node pkg="rt_usb_9axisimu_driver" type="rt_usb_9axisimu_driver" name="rt_usb_9axisimu_driver" required="true" output="screen">
+		<param name="port" value="$(arg port)" />
+		<param name="frame_id" value="$(arg frame_id)" />
+	</node>
+
+	<node pkg="tf" type="static_transform_publisher" name="rt_imu_frame" args="0.7 0 0 -1.5708 0 0 base_link imu_link 100" />
+
+
+</launch>

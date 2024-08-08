@@ -1,0 +1,9 @@
+digraph G {
+"base_link" -> "tim_link_R"[label="Broadcaster: /tim_scans/stp_tim_R_frame\nAverage rate: 10.188 Hz\nMost recent transform: 1654929765.428 ( -0.041 sec old)\nBuffer length: 4.908 sec\n"];
+"base_link" -> "tim_link_L"[label="Broadcaster: /tim_scans/stp_tim_L_frame\nAverage rate: 10.189 Hz\nMost recent transform: 1654929765.459 ( -0.071 sec old)\nBuffer length: 4.907 sec\n"];
+"base_link" -> "laser_link"[label="Broadcaster: /stp_laser_frame\nAverage rate: 10.188 Hz\nMost recent transform: 1654929765.477 ( -0.090 sec old)\nBuffer length: 4.908 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1654929765.388"[ shape=plaintext ] ;
+ }->"base_link";
+}

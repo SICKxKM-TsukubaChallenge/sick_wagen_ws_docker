@@ -1,0 +1,52 @@
+<launch>
+	<arg name="x_pos" default="0.0" />
+	<arg name="y_pos" default="0.0" />
+	<arg name="z_pos" default="0.0" />
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find sick_wagen)/worlds/test.world.sdf" />
+		<arg name="paused" value="false" />
+		<arg name="use_sim_time" value="true" />
+		<arg name="gui" value="true" />
+		<arg name="headless" value="false" />
+		<arg name="debug" value="false" />
+	</include>
+
+	<rosparam command="load" file="$(find sick_wagen)/config/gazebo/diff_drive_controller.yaml" ns="/whill_simulator" />
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/whill_simulator" args="diff_drive_controller" />
+
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find sick_wagen)/xacro/sick_wagen.xacro" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model modelc -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description">
+	</node>
+
+	<node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard">
+		<remap from="/cmd_vel" to="/whill_simulator/diff_drive_controller/cmd_vel" />
+	</node>
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<!-- gmapping -->
+	<node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" clear_params="true">
+		<param name="map_update_interval" value="1.0" />
+		<param name="temporalUpdate" value="1.0" />
+		<param name="base_frame" value="base_link"/>
+		<param name="odom_frame" value="odom"/>
+		<param name="maxUrange" value="10.0" type="double" />
+		<!--    loop closureのparam    -->
+		<param name="sigma" value="0.05" />
+		<!-- MAP param    -->
+		<param name="xmax" value="100" type="double" />
+		<param name="ymax" value="100" type="double" />
+		<param name="xmin" value="-100" type="double" />
+		<param name="ymin" value="-100" type="double" />
+		<param name="delta" value="0.05" />
+		<param name="occ_thresh" value="0.25" />
+
+		<param name="base_frame" value="base_link" />
+		<param name="odom_frame" value="odom" />
+		<param name="map_frame" value="map" />
+	</node>
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/031_gazebo_gmapping/031_gazebo_gmapping.rviz" />
+</launch>

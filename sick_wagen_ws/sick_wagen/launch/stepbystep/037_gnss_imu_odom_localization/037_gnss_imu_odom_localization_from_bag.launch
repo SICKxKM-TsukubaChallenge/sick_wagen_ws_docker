@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+	<param name="/use_sim_time" value="true" />
+
+	<arg name="bag_file" />
+	<node pkg="rosbag" type="play" name="playback" args="--clock $(arg bag_file) -r 4.0" >
+	</node>
+
+	<!-- xacro   -->
+	<arg name="xacro_file" default="$(env SICK_WAGEN_XACRO)"/>
+	<param name="robot_description" command="$(find xacro)/xacro $(find sick_wagen)/xacro/$(arg xacro_file)"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+		<remap from="/joint_states" to="/whill/states/jointState" />
+	</node>
+	
+	<!-- GPS to odometry -->
+	<rosparam command="load" file="$(find sick_wagen)/config/navsat/navsat_all.yaml" />
+	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" respawn="true">
+		<remap from="/gps/fix" to="/ublox/fix"/>
+		<remap from="/imu/data" to="/wit/imu"/>
+	</node>
+
+	<!-- EKF -->
+	<rosparam command="load" file="$(find sick_wagen)/config/robot_localization/whill_ekf_gnss_imu_odom.yaml" />
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" clear_params="true">
+	</node>
+
+	<!-- x y z yaw pitch roll frame_id child_frame_id -->
+	<arg name="map_pcd" default="$(env ROS_3D_MAP)"/>
+	<node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="$(arg map_pcd)">
+		<param name="frame_id" type="string" value="map" />
+		<param name="latch" type="bool" value="True" />
+		<remap from="cloud_pcd" to="mapcloud" />
+	</node>
+
+	<!-- just for evaluation -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="my_static_transform" args="0 0 0 0 0 0 map odom" />
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/037_gnss_imu_odom_localization/037.rviz">
+		<remap from="initialpose" to="set_pose"/>
+	</node>
+</launch>

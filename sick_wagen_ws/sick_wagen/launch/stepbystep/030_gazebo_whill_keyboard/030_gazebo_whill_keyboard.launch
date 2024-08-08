@@ -1,0 +1,30 @@
+<launch>
+	<arg name="x_pos" default="0.0" />
+	<arg name="y_pos" default="0.0" />
+	<arg name="z_pos" default="0.0" />
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find sick_wagen)/worlds/test.world.sdf" />
+		<arg name="paused" value="false" />
+		<arg name="use_sim_time" value="true" />
+		<arg name="gui" value="true" />
+		<arg name="headless" value="false" />
+		<arg name="debug" value="false" />
+	</include>
+
+	<rosparam command="load" file="$(find sick_wagen)/config/gazebo/diff_drive_controller.yaml" ns="/whill_simulator" />
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/whill_simulator" args="diff_drive_controller" />
+
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find sick_wagen)/xacro/sick_wagen.xacro" />
+
+	<node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model modelc -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description">
+	</node>
+
+	<node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard">
+		<remap from="/cmd_vel" to="/whill_simulator/diff_drive_controller/cmd_vel" />
+	</node>
+
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/030_gazebo_whill_keyboard/030_gazebo_whill_keyboard.rviz" />
+</launch>

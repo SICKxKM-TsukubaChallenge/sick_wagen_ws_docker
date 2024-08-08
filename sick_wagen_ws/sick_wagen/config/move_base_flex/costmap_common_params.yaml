@@ -1,0 +1,10 @@
+obstacle_range: 2.5   # ロボットとの距離がobstacle_range以下のオブジェクトは障害物としてみなし、コストマップに反映する。
+raytrace_range: 3.0   # ロボットとの距離がraytrace_range以下のオブジェクトが検出された場合、そのオブジェクトの内側のコストマップの障害物がクリアされる。
+footprint: [[0.95, -0.40], [-0.35, -0.40], [-0.35, 0.40],[0.95, 0.40]] # ロボットの形状を多角形で指示することができる。
+#footprint: [[1.00, -0.50], [-0.4, -0.5], [-0.4, 0.5],[1.00, 0.50]]
+#footprint: [[0.95, -0.40], [-0.35, -0.45], [-0.35, 0.45],[0.95, 0.40]]
+inflation_radius: 0.1 #0.2 # コストマップをinflation_radiusの距離分膨張させる
+transform_tolerance: 0.5    # tf変換の最大レイテンシー
+observation_sources: tim multiscan
+tim: {sensor_frame: laser_link, data_type: LaserScan, topic: tim_scan, marking: true, clearing: true}
+multiscan: {sensor_frame: multiscan_link, data_type: PointCloud2, topic: cloud_360, marking: true, clearing: true}  

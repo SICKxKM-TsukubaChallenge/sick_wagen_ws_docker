@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<launch>
+	<arg name="xacro_file" default="$(env SICK_WAGEN_XACRO)"/>
+	<param name="robot_description" command="$(find xacro)/xacro $(find sick_wagen)/xacro/$(arg xacro_file)"/>
+
+	<node pkg="ros_whill" type="ros_whill" name="whill" output="screen">
+		<rosparam file="$(find ros_whill)/params/initial_speedprofile.yaml" command="load" />
+		<param name="keep_connected" value="true" />
+		<!-- Serial Device name -->
+		<param name="serialport" value="/dev/ttyUSB-WHILL"/>
+		<!-- Output Odometry tf or not. If other node publishes odom->base_link tf, Change value to "false" -->
+		<param name="publish_tf" value="false"/>
+	</node>
+
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+		<remap from="/joint_states" to="/whill/states/jointState" />
+	</node>
+
+	<node name="wagen_controller" pkg="sick_wagen" type="wagen_controller" output="screen">
+		<remap from="cmd_vel" to="/whill/controller/cmd_vel"/>
+	</node>
+
+	<node name="joy_node" pkg="joy" type="joy_node" args="_dev:=/dev/input/js0"/>
+</launch>

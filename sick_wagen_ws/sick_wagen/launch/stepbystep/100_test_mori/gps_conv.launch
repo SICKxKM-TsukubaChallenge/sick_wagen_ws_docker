@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--  ublox launch file  -->
+	<node pkg="ublox_gps" type="ublox_gps" name="ublox" output="screen" clear_params="true" respawn="true" respawn_delay="30">
+		<rosparam command="load" file="$(find sick_wagen)/config/ublox_gps/zed_f9p_whill.yaml" />
+	</node>
+	<node pkg="tf" type="static_transform_publisher" name="stp_gps_frame" args="0 0 1.03 0 0 0 base_link gps 100" />
+
+	<node name="gps_conv" pkg="gps_common" type="utm_odometry_node">
+		<remap from="odom" to="gps_odom"/>
+		<remap from="fix" to="/ublox/fix" />
+		<param name="rot_covariance" value="99999" />
+		<param name="frame_id" value="gps" />
+	</node>
+	<!--  robot_localization  -->
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true" output="screen">
+		<rosparam command="load" file="$(find sick_wagen)/launch/stepbystep/100_test_mori/robot_localization/ekf_robot_localization.yaml" />
+		<remap from="/odometry/filtered" to="/odometry/filtered" />
+		<remap from="odom0" to="/whill/odom" />
+		<remap from="odom1" to="/gps_odom" />
+		<!--		     
+				     <remap from="imu0" to="/whill/states/imu" />
+				     -->
+	</node>
+
+</launch>

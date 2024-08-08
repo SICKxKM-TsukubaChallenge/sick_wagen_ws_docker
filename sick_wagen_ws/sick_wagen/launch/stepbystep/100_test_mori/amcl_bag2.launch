@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--     EKF     -->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/ekf.launch" />
+	<node pkg="tf" type="static_transform_publisher" name="rt_imu_frame" args="0.7 0 0.2 0 0 0 base_link imu_link 100" />
+	<node pkg="tf" type="static_transform_publisher" name="stp_gps_frame" args="0 0 1.03 0 0 0 base_link gps 100" />
+	<node pkg="tf" type="static_transform_publisher" name="stp_mrs_laser" args="-0.1 0 1.3 0 0  3.14 base_link mrs_link 100" />
+
+	<!--		 map		-->
+	<arg name="map_file" default="$(find sick_wagen)/launch/stepbystep/100_test_mori/map/map_1117.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+	<!--		amcl node		-->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/amcl.launch" />
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/100_test_mori/amcl.rviz"/>
+</launch>

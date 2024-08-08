@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="map_pcd" default="$(env ROS_3D_MAP)"/>
+	<node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="$(arg map_pcd)">
+		<remap from="cloud_pcd" to="mapcloud" />
+	</node>
+
+	<!--  MCL 3DL  -->
+	<rosparam command="load" file="$(find sick_wagen)/config/mcl_3dl/mcl_3dl.yaml"/>
+	<node pkg="mcl_3dl" type="mcl_3dl" name="mcl_3dl" output="screen">
+		<param name="compatible" value="1" />
+		<remap from="/imu/data" to="/wit/imu" />
+		<remap from="/cloud" to="/cloud_360" />
+		<remap from="/odom" to="/whill/odom" />
+	</node>
+
+	<!-- xacro   -->
+	<arg name="xacro_file" default="$(env SICK_WAGEN_XACRO)"/>
+	<param name="robot_description" command="$(find xacro)/xacro $(find sick_wagen)/xacro/$(arg xacro_file)"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+		<remap from="/joint_states" to="/whill/states/jointState" />
+	</node>
+
+	<!-- ros whill   -->
+	<node pkg="ros_whill" type="ros_whill" name="whill" output="screen">
+		<rosparam file="$(find ros_whill)/params/initial_speedprofile.yaml" command="load" />
+		<param name="keep_connected" value="true" />
+		<!-- Serial Device name -->
+		<param name="serialport" value="/dev/ttyUSB-WHILL"/>
+		<!-- Output Odometry tf or not. If other node publishes odom->base_link tf, Change value to "false" -->
+		<param name="publish_tf" value="true"/>
+	</node>
+
+	<!--  command vel controller  -->
+	<node name="wagen_controller" pkg="sick_wagen" type="wagen_controller" output="screen">
+		<remap from="cmd_vel" to="/whill/controller/cmd_vel"/>
+	</node>
+
+	<!--  Joy stick  -->
+	<node name="joy_node" pkg="joy" type="joy_node" args="_dev:=/dev/input/js0"/>
+
+
+	<!-- imu -->
+	<node pkg="nodelet" type="nodelet" output="screen" name="wit_nodelet_manager" args="manager" />
+	<node pkg="nodelet" type="nodelet" output="screen" name="wit" args="load wit_node/WitNodelet wit_nodelet_manager">
+		<param name="port" value="/dev/ttyUSB-WT901C" />
+		<remap from="/imu" to="/wit/imu" />
+	</node>
+
+
+	<!--  LiDAR   -->
+	<!--  multiScan   -->
+	<arg name="udp_receiver_ip" default="$(env ROS_MASTER_PC_IP)" />
+	<node name="multiScan" pkg="sick_scan" type="sick_generic_caller" respawn="false" output="screen" required="true">
+		<param name="scanner_type" type="string" value="sick_multiscan" />
+		<!-- network settings: -->
+		<param name="hostname" type="string" value="MULTISCAN_IP" />
+		<param name="port" type="int" value="2115" />
+		<param name="udp_receiver_ip" type="string" value="$(arg udp_receiver_ip)" />
+		<param name="udp_sender" type="string" value="" />
+		<param name="udp_port" type="int" value="2115" />
+		<param name="publish_topic" type="string" value="/cloud" />
+		<param name="publish_topic_all_segments" type="string" value="/cloud_360" />
+		<param name="segment_count" type="int" value="12" />
+		<param name="publish_frame_id" type="string" value="multiscan_link" />
+		<param name="udp_input_fifolength" type="int" value="20" />
+		<param name="msgpack_output_fifolength" type="int" value="20" />
+		<param name="verbose_level" type="int" value="0" />
+		<!-- verbose_level <= 0: quiet mode, verbose_level == 1: print statistics, verbose_level == 2: print details incl. msgpack data, default: 1 -->
+		<param name="measure_timing" type="bool" value="True" />
+		<param name="export_csv" type="bool" value="False" />
+		<param name="export_udp_msg" type="bool" value="False" />
+		<param name="logfolder" type="string" value="" />
+		<param name="send_udp_start" type="bool" value="False" />
+		<param name="send_udp_start_string" type="string" value="magicalActivate" />
+		<param name="udp_timeout_ms" type="int" value="60000" />
+		<param name="range_min" type="double" value="0.0" />
+		<param name="range_max" type="double" value="100.0" />
+		<param name="range_filter_handling" type="int" value="0" />
+		<param name="add_transform_xyz_rpy" type="string" value="0,0,0,0,0,0" />
+		<param name="add_transform_check_dynamic_updates" type="bool" value="false" />
+		<!-- SOPAS settings: -->
+		<param name="sopas_tcp_port" type="string" value="2111" />
+		<param name="start_sopas_service" type="bool" value="True" />
+		<param name="send_sopas_start_stop_cmd" type="bool" value="True" />
+		<param name="sopas_cola_binary" type="bool" value="False" />
+		<param name="sopas_timeout_ms" type="int" value="5000" />
+		<param name="client_authorization_pw" type="string" value="F4724744" />
+		<!-- MSR100 filter settings -->
+		<param name="host_read_filtersettings" type="bool" value="True" />
+		<param name="host_FREchoFilter" type="int" value="0" />
+		<param name="host_set_FREchoFilter" type="bool" value="False" />
+		<param name="host_LFPangleRangeFilter" type="string" value="0 -180.0 +179.0 -90.0 +90.0 1" />
+		<param name="host_set_LFPangleRangeFilter" type="bool" value="False" />
+		<param name="host_LFPlayerFilter" type="string" value="0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1" />
+		<param name="host_set_LFPlayerFilter" type="bool" value="False" />
+		<!-- Msgpack validation -->
+		<param name="msgpack_validator_enabled" type="bool" value="False" />
+		<param name="msgpack_validator_verbose" type="int" value="1" />
+		<param name="msgpack_validator_discard_msgpacks_out_of_bounds" type="bool" value="True" />
+		<param name="msgpack_validator_check_missing_scandata_interval" type="int" value="12" />
+		<param name="msgpack_validator_required_echos" type="string" value="0" />
+		<param name="msgpack_validator_azimuth_start" type="double" value="-180.0" />
+		<param name="msgpack_validator_azimuth_end" type="double" value="+180.0" />
+		<param name="msgpack_validator_elevation_start" type="double" value="-90.0" />
+		<param name="msgpack_validator_elevation_end" type="double" value="+90.0" />
+		<param name="msgpack_validator_valid_segments" type="string" value="0 1 2 3 4 5 6 7 8 9 10 11" />
+		<param name="msgpack_validator_layer_filter" type="string" value="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1" />
+		<param name="ros_qos" type="int" value="-1" />
+		<param name="laserscan_layer_filter" type="string" value="0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0" />
+	</node>
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/022_whill_mcl_3d/022.rviz" />
+
+</launch>

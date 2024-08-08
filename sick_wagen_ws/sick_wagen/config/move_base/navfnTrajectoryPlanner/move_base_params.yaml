@@ -1,0 +1,32 @@
+# move base params 
+# プランナーの設定
+
+base_global_planner: "navfn/NavfnROS"
+base_local_planner: "base_local_planner/TrajectoryPlannerROS"
+
+# 指令値の出力周波数（制御周期）
+controller_frequency: 20.0
+#有効なパスが見つからなかったときrecover前に待機する時間
+planner_patience: 5.0
+
+#コントローラーに信号が送られなかった場合、recovery前に待機する時間
+controller_patience: 3.0
+#costmapから障害物がクリアされるまでのロボットからの距離
+conservative_reset_dict: 3.0
+
+#global plannerがglobal pathを計算する頻度
+planner_frequency: 0.0
+shutdown_costmaps: false
+
+#recover動作を有効
+recovery_behavior_enabled: true
+#recovery動作でrotationするか
+clearing_rotation_allowed: true
+
+#pathがロストしたとみなされる距離
+oscillation_timeout: 0.0
+oscillation_distance: 0.5
+
+#何度までパスの計算をリトライするか
+max_planning_retries: -1
+

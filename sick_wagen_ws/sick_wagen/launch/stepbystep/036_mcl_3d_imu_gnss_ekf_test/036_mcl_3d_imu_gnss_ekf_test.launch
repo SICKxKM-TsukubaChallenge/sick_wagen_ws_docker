@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="bag_file" />
+	<node pkg="rosbag" type="play" name="playback" args="--clock $(arg bag_file) -r 5.0" />
+	<param name="/use_sim_time" value="true" />
+
+	<!-- xacro -->
+	<arg name="xacro_file" default="$(env SICK_WAGEN_XACRO)"/>
+	<param name="robot_description" command="$(find xacro)/xacro $(find sick_wagen)/xacro/$(arg xacro_file)"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+		<remap from="/joint_states" to="/whill/states/jointState" />
+	</node>
+
+	<!--  MCL 3DL & MAP -->
+	<rosparam command="load" file="$(find sick_wagen)/config/mcl_3dl/mcl_3dl.yaml"/>
+	<arg name="map_pcd" default="$(env ROS_3D_MAP)"/>
+	<node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="$(arg map_pcd)">
+		<remap from="cloud_pcd" to="mapcloud" />
+	</node>
+
+	<!-- <node pkg="mcl_3dl" type="mcl_3dl" name="mcl_3dl" output="screen">
+		<param name="compatible" value="1" />
+		<remap from="/imu/data" to="/wit/imu" />
+		<remap from="/cloud" to="/cloud_concatenated" />
+		<remap from="/odom" to="/whill/odom" />
+	</node> -->
+
+	<!-- GPS to odometry -->
+	<rosparam command="load" file="$(find sick_wagen)/config/robot_localization/whill_mcl_3dl.yaml" />
+	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" respawn="true">
+		<remap from="gps/fix" to="ublox/fix"/>
+		<remap from="imu/data" to="wit/imu"/>
+		<remap from="odometry/filtered" to="/whill/odom"/>
+	</node>
+
+	<!--  robot_localization  -->
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
+		<remap from="imu" to="/wit/imu"/>
+		<remap from="odom" to="/whill/odom"/>
+		<remap from="odom_gps" to="/odometry/gps"/>
+		<remap from="pose" to="/mcl_3dl/particles"/>
+		<remap from="odometry/filtered" to="odometry/filtered_map"/>
+	</node>
+
+	<node pkg="sick_wagen" type="ekf_setpose.py" name="ekf_setpose_relay" respawn="true"/>
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/036_mcl_3d_imu_gnss_ekf_test/036.rviz" />
+
+</launch>

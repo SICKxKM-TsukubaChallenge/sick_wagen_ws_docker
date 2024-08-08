@@ -1,0 +1,19 @@
+# Configuration Settings for ZED-F9P device
+debug: 0                # Range 0-4 (0 means no debug statements will print)
+
+config_on_startup: false # use chip config
+
+uart1:
+        baudrate: 230400       # serial port baudrate
+        in: 32
+        out: 3
+
+        # Enable u-blox message publishers
+publish:
+        all: false
+        nav:
+                all: true
+                relposned: true
+                posllh: true
+                posecef: true
+

@@ -1,0 +1,58 @@
+
+TrajectoryPlannerROS:
+  #Robot Configuration Parameters
+  #加速度
+  acc_lim_x: 0.5
+  acc_lim_y: 0.0
+  acc_lim_theta: 0.6
+
+  #速度
+  max_vel_x: 0.5 
+  min_vel_x: 0.1
+  max_vel_theta: 0.5
+  min_vel_theta: -0.5
+  min_in_place_vel_theta: 0.2
+
+  #脱出時の速度（正は前進）
+  escape_vel: -0.1
+  
+  #Goal Tolerance Parameters
+  #目標達成の許容誤差
+  yaw_goal_tolerance: 0.05
+  xy_goal_tolerance: 0.1
+  #latchとは
+  latch_xy_goal_tolerance: false
+  
+  #Forward Simulation Parameters
+  #軌道を順方向にシミュレートする時間、ステップサイズ（細かさ）
+  sim_time: 1.0
+  sim_granularity: 0.025
+  #不明 angular_sim_granularity:
+  #x,theta速度を何段階シミュレートするか
+  vx_samples: 5
+  vtheta_samples: 20
+  controller_frequency: 20.0
+
+  #Trajectory Scoring Parameters
+  #経路生成のコストパラメータ
+  #経路コストを計算するときにコストマップのセル数か距離で計算するか
+  #falseではセル
+  meter_scoring: false
+  # cost = pdist_scale*pathまでの距離 + gdist*localgoalまでの距離+occdict*セルのコスト 
+  path_distance_bias: 0.6   #global pathに近づく
+  goal_distance_bias: 0.8   #よりlocal goalを目指す
+  occdist_scale: 0.01   #障害物をより回避　
+  heading_lookahead: false
+  heading_scoring: 0.8
+  heading_scoring_timestep: 0.8
+  dwa: true #計算コストが下がる
+  publish_cost_grid_pc: false  
+  global_frame_id: map
+
+  #Oscillation Prevention Parameters ?
+  oscillation_reset_dist: 0.05
+
+  #Global Plan Parameters
+  #通過したpathを削除する
+  prune_plan: true
+  

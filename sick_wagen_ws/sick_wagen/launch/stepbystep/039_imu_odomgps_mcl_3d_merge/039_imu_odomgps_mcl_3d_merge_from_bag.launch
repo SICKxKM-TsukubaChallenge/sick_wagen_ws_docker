@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+	<param name="/use_sim_time" value="true" />
+
+	<arg name="bag_file" />
+	<node pkg="rosbag" type="play" name="playback" args="--clock $(arg bag_file) -r 2.0"  launch-prefix="bash -c 'sleep 2.0; $0 $@'" />
+
+	<!-- xacro   -->
+	<arg name="xacro_file" default="$(env SICK_WAGEN_XACRO)"/>
+	<param name="robot_description" command="$(find xacro)/xacro $(find sick_wagen)/xacro/$(arg xacro_file)"/>
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+		<remap from="/joint_states" to="/whill/states/jointState" />
+	</node>
+	
+	<!-- GPS to odometry -->
+	<rosparam command="load" file="$(find sick_wagen)/config/navsat/navsat_all.yaml" />
+	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" respawn="true">
+		<remap from="/gps/fix" to="/ublox/fix"/>
+		<remap from="/imu/data" to="/wit/imu"/>
+	</node>
+
+	<!-- EKF -->
+	<rosparam command="load" file="$(find sick_wagen)/config/robot_localization/whill_ekf_gnss_imu_odom.yaml" />
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" clear_params="true"/>
+
+	<!-- x y z yaw pitch roll frame_id child_frame_id -->
+	<arg name="map_pcd" default="$(env ROS_3D_MAP)"/>
+	<node pkg="pcl_ros" type="pcd_to_pointcloud" name="pcd_to_pointcloud" args="$(arg map_pcd)">
+		<param name="frame_id" type="string" value="map" />
+		<param name="latch" type="bool" value="True" />
+		<remap from="cloud_pcd" to="mapcloud" />
+	</node>
+
+	<!-- <node pkg="sick_wagen" type="odom_mng" name="odom_manager">
+		<param name="cov_Max" value="10" />
+	</node> -->
+	
+	<!-- changing number of covariance of rosbag -->
+	<node pkg="sick_wagen" type="covariance_modifier" name="covariance_modifier"/>
+	
+	<rosparam command="load" file="$(find sick_wagen)/config/mcl_3dl/mcl_3dl.yaml" />
+	<node pkg="mcl_3dl" type="mcl_3dl" name="mcl_3dl" output="screen">
+		<param name="compatible" value="1" />
+		<remap from="/imu/data" to="/wit/imu" />
+		<remap from="/cloud" to="/cloud_concatenated" />
+		<remap from="/odom" to="/odometry/filtered" />
+		<!-- <remap from="/odom" to="/whill/odom" /> -->
+		<!-- <remap from="/odom" to="/odometry/selected" /> -->
+	</node>
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/039_imu_odomgps_mcl_3d_merge/039.rviz">
+		<!-- <remap from="initialpose" to="set_pose"/> -->
+	</node>
+</launch>

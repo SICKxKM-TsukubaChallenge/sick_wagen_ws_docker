@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<launch>
+	<!--     EKF     -->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/ekf.launch" />
+
+	<!--		 map		-->
+	<!--	<arg name="map_file" default="$(find sick_wagen)/launch/stepbystep/100_test_mori/map/map_1117_3.yaml"/>
+-->
+	<arg name="map_file" default="$(find sick_wagen)/launch/stepbystep/100_test_mori/map/map11202.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+	<!--		amcl node		-->
+	<include file="$(find sick_wagen)/launch/stepbystep/100_test_mori/amcl.launch" />
+	<arg name="node_start_delay" default="5.0" />
+	<node pkg="ira_laser_tools" name="laserscan_multi_merger" type="laserscan_multi_merger" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@'">
+		<param name="destination_frame" value="base_link"/>
+		<param name="cloud_destination_topic" value="/merged2_cloud"/>
+		<param name="scan_destination_topic" value="/tim2_scan"/>
+		<param name="laserscan_topics" value ="/tim_scans/tim_scan_R /tim_scans/tim_scan_L" />
+		<!-- LIST OF THE LASER SCAN TOPICS TO SUBSCRIBE -->
+		<param name="angle_min" value="-3.14159265"/>
+		<param name="angle_max" value="3.14159265"/>
+		<param name="angle_increment" value="0.004363323"/>
+		<param name="scan_time" value="0.02"/>
+		<param name="range_min" value="0.1"/>
+		<param name="range_max" value="90.0"/>
+	</node>
+
+	<node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find sick_wagen)/launch/stepbystep/100_test_mori/amcl.rviz"/>
+</launch>

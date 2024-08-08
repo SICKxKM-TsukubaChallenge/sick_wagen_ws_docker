@@ -1,0 +1,34 @@
+TrajectoryPlannerROS:
+    #Robot Configuration Parameters
+    acc_lim_x: 0.1 #2.5 
+    acc_lim_y: 0.0
+    acc_lim_theta: 1.6 
+
+    max_vel_x: 0.5 
+    min_vel_x: -0.1
+    max_vel_theta: 1.0
+    min_vel_theta: -1.0
+    min_in_place_rotational_vel: 0.4
+
+    max_rotational_vel: 0.5
+    holonomic_robot: false
+
+    #Goal Tolerance Parameters
+    xy_goal_tolerance: 0.1
+    yaw_goal_tolerance: 0.1
+    latch_xy_goal_tolerance: false 
+
+    #Forward Simulation Paramaters
+    sim_time: 1.0
+    vx_samples: 40 #3 
+    vtheta_samples: 30
+    controller_frequency: 20.0
+
+    meter_scoring: true
+    #Trajectory Scoring Parameters
+    #gdistより大きくするとよりglobal planに近くなる
+    #pdist_scale: 0.6 #0.6
+    #gdist_scale: 0.8 #0.8
+    path_distance_bias: 0.6
+    goal_distance_bias: 0.8
+    occdist_scale: 0.01 #0.05

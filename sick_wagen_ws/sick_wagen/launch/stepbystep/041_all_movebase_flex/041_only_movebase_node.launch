@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+	<!--		move base		-->
+	<arg name="odom_topic" default="odom" />
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find sick_wagen)/config/move_base_tsukuba_2023/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find sick_wagen)/config/move_base_tsukuba_2023/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find sick_wagen)/config/move_base_tsukuba_2023/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find sick_wagen)/config/move_base_tsukuba_2023/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find sick_wagen)/config/move_base_tsukuba_2023/move_base_params.yaml" command="load" />
+		<rosparam file="$(find sick_wagen)/config/move_base_tsukuba_2023/dwa_local_planner_params.yaml" command="load" />
+
+		<param name="controller_frequency" value="5.0" />
+		<remap from="cmd_vel" to="/cmd_vel_move_base" />
+		<remap from="odom" to="whill/odom" />
+	</node>
+</launch>

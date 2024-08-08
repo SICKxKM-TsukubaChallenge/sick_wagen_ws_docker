@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<launch>
+	<node pkg="nodelet" type="nodelet" output="screen" name="wit_nodelet_manager" args="manager"/>
+	<node pkg="nodelet" type="nodelet" output="screen" name="wit" args="load wit_node/WitNodelet wit_nodelet_manager">
+		<param name="port" value="/dev/ttyUSB-WT901C" />
+	</node>
+</launch>

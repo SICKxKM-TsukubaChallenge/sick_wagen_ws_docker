@@ -1,0 +1,17 @@
+# move base params for MEGAROVER
+
+# プランナーの設定
+base_global_planner: "navfn/NavfnROS"
+base_local_planner: "dwa_local_planner/DWAPlannerROS"
+
+# 指令値の出力周波数（制御周期）
+controller_frequency: 10.0
+shutdown_costmaps: false
+
+#recover
+#recovery behaviors に回転を許可するか
+#clearing_rotation_allowed: false
+
+#何度までパスの計算をリトライするか
+#max_planning_retries: 10
+
