@@ -8,7 +8,7 @@ docker build -t sick/ros:noetic .
 ```
 ### Docker container implementation
 ```
-rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+rocker --x11 --nvidia --user --network=host --privileged --volume $(pwd):/root/sick_wagen_ws_docker --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
 ```
 
 # SICK Wagen workspace
@@ -43,7 +43,7 @@ pip install rocker
 
 ### コンテナの起動
 
-デフォルトではrockerコマンドで実行する．テスト用に`-d`オプションでdockerコマンドで実行可能．
+デフォルトではrockerコマンドで実行する．テスト用に`-d`オプションでdockerコマンドで実行可能（シリアルポートなどのマウントはなし）．
 ```
 chmod +x run_container.sh
 ./run_container.sh
