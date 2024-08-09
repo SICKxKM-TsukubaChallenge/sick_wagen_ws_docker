@@ -14,13 +14,13 @@ rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add
 # SICK Wagen workspace
 
 ## Installation
-ssh-agentの起動
+### ssh-agentの起動
 ```
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
 ```
 
-ディレクトリを作り，リンクを作成
+### ディレクトリを作り，リンクを作成
 ```bash
 cd ~
 git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git 
@@ -29,23 +29,32 @@ ln -sf sick_wagen_ws src
 cd src
 git submodule foreach --recursive git checkout ros1-sick
 ```
-イメージのビルド
+
+ ### イメージのビルド
 ```
 cd ~/sick_wagen_ws_docker
 docker build -t sick/ros:noetic .
 ```
 
-rockerのinstall
+### rockerのinstall
 ```
 pip install rocker
 ```
 
-コンテナの起動
+### コンテナの起動
+
+デフォルトではrockerコマンドで実行する．テスト用に`-d`オプションでdockerコマンドで実行可能．
 ```
-rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+chmod +x run_container.sh
+./run_container.sh
 ```
 
-コンテナ内での(ROSシステムの)ビルド
+もしくは，以下のように手動でも実行可
+```
+rocker --x11 --nvidia --user --network=host --privileged --volume $(pwd):/root/sick_wagen_ws_docker --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+```
+
+### コンテナ内での (ROSシステムの) ビルド
 ```
 cd ~/sick_wagen_ws_docker
 catkin build
