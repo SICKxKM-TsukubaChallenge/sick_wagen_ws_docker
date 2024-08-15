@@ -1,18 +1,18 @@
 [submodule "ros_whill"]
-	path = ros_whill
+	path = sick_wagen_ws/ros_whill
 	url = git@github.com:SICKxKM-TsukubaChallenge/ros_whill.git
 [submodule "ira_laser_tools"]
-	path = ira_laser_tools
+	path = sick_wagen_ws/ira_laser_tools
 	url = git@github.com:SICKxKM-TsukubaChallenge/ira_laser_tools.git
 [submodule "sick_wagen"]
-	path = sick_wagen
+	path = sick_wagen_ws/sick_wagen
 	url = git@github.com:SICKxKM-TsukubaChallenge/sick_wagen.git
 [submodule "wit_node"]
-	path = wit_node
+	path = sick_wagen_ws/wit_node
 	url = git@github.com:SICKxKM-TsukubaChallenge/wit_node.git
 [submodule "mcl_3dl"]
-	path = mcl_3dl
+	path = sick_wagen_ws/mcl_3dl
 	url = git@github.com:SICKxKM-TsukubaChallenge/mcl_3dl.git
 [submodule "pointcloud_concatenate"]
-	path = pointcloud_concatenate
+	path = sick_wagen_ws/pointcloud_concatenate
 	url = git@github.com:SICKxKM-TsukubaChallenge/pointcloud_concatenate.git
