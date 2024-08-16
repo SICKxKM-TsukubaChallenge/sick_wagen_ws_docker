@@ -8,47 +8,69 @@ docker build -t sick/ros:noetic .
 ```
 ### Docker container implementation
 ```
-rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+rocker --x11 --nvidia --user --network=host --privileged --volume $(pwd):/root/sick_wagen_ws_docker --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
 ```
 
 # SICK Wagen workspace
 
 ## Installation
-ssh-agentの起動
+### ssh-agentの起動
 ```
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa
 ```
 
-ディレクトリを作り，リンクを作成
+### ディレクトリを作り，リンクを作成
 ```bash
-mkdir ~/sick_wagen_workspace
-cd ~/sick_wagen_workspace
-git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git
-mv sick_wagen_ws_docker sick_wagen_workspace 
-ln -sf sick_wagen_workspace src
+cd ~
+git clone --recursive git@github.com:SICKxKM-TsukubaChallenge/sick_wagen_ws_docker.git 
+cd sick_wagen_ws_docker
+ln -sf sick_wagen_ws src
 cd src
 git submodule foreach --recursive git checkout ros1-sick
 ```
-イメージのビルド
+
+### イメージのビルド
 ```
+cd ~/sick_wagen_ws_docker
 docker build -t sick/ros:noetic .
 ```
 
-rockerのinstall
+### rockerのinstall
 ```
 pip install rocker
 ```
 
-コンテナの起動
+### コンテナの起動
+
+デフォルトではrockerコマンドで実行する．テスト用に`-d`オプションでdockerコマンドで実行可能（シリアルポートなどのマウントはなし）．
 ```
-rocker --x11 --nvidia --user --network=host --privileged --volume ./ --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+chmod +x run_container.sh
+./run_container.sh
 ```
 
-コンテナ内での(ROSシステムの)ビルド
+もしくは，以下のように手動でも実行可
 ```
-cd ~/sick_wagen_workspace
+rocker --x11 --nvidia --user --network=host --privileged --volume $(pwd):/root/sick_wagen_ws_docker --group-add dialout --volume /dev/tty* --volume /dev/video* --volume /dev/fdcanusb -- sick/ros:noetic
+```
+
+### コンテナ内での (ROSシステムの) ビルド
+```
+cd ~/sick_wagen_ws_docker
 catkin build
+```
+
+## Add & update submodules
+### Add submodule
+```
+cd ~/sick_wagen_ws_docker
+git submodule add git@github.com:XXX/YYY.git ./sick_wagen_ws/YYY
+```
+
+### Update submodule
+リモートのモジュールを全て更新
+```
+git submodule update --remote --recursive
 ```
 
 ## Devices
