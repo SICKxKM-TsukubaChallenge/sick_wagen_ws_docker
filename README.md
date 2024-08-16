@@ -30,7 +30,7 @@ cd src
 git submodule foreach --recursive git checkout ros1-sick
 ```
 
- ### イメージのビルド
+### イメージのビルド
 ```
 cd ~/sick_wagen_ws_docker
 docker build -t sick/ros:noetic .
@@ -58,6 +58,19 @@ rocker --x11 --nvidia --user --network=host --privileged --volume $(pwd):/root/s
 ```
 cd ~/sick_wagen_ws_docker
 catkin build
+```
+
+## Add & update submodules
+### Add submodule
+```
+cd ~/sick_wagen_ws_docker
+git submodule add git@github.com:XXX/YYY.git ./sick_wagen_ws/YYY
+```
+
+### Update submodule
+リモートのモジュールを全て更新
+```
+git submodule update --remote --recursive
 ```
 
 ## Devices
